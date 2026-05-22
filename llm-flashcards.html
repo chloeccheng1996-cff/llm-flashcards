@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>大模型术语卡 - HR速查</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;background:#f5f5f7;min-height:100vh;color:#1d1d1f;-webkit-tap-highlight-color:transparent}
+.app{max-width:480px;margin:0 auto;padding:20px 16px 120px}
+.header{text-align:center;padding:20px 0 12px;position:relative}
+.header h1{font-size:20px;font-weight:600;margin-bottom:4px}
+.header p{font-size:13px;color:#86868b}
+.challenge-entry{display:flex;gap:8px;margin:12px 0 0;justify-content:center}
+.challenge-entry-btn{padding:8px 20px;border-radius:20px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-quiz{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+.btn-quiz:active{transform:scale(.96)}
+.btn-wrong{background:#fff;border:1px solid #ff3b30;color:#ff3b30;position:relative}
+.wrong-badge{position:absolute;top:-6px;right:-6px;background:#ff3b30;color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.progress-bar{background:#e8e8ed;border-radius:4px;height:5px;margin:12px 0 6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#007aff,#5856d6);border-radius:4px;transition:width .3s}
+.progress-text{font-size:12px;color:#86868b;text-align:center;margin-bottom:16px}
+.mode-switch{display:flex;margin-bottom:14px;background:#fff;border-radius:10px;padding:3px;border:1px solid #e8e8ed}
+.mode-btn{flex:1;padding:8px;border-radius:8px;border:none;background:transparent;font-size:12px;font-weight:500;cursor:pointer;color:#86868b;transition:all .2s}
+.mode-btn.active{background:#1d1d1f;color:#fff}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px;margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:6px 14px;border-radius:16px;font-size:12px;font-weight:500;background:#fff;border:1px solid #e8e8ed;cursor:pointer;white-space:nowrap;transition:all .2s}
+.tab.active{background:#1d1d1f;color:#fff;border-color:#1d1d1f}
+.card{background:#fff;border-radius:16px;border:1px solid #e8e8ed;padding:24px 20px;margin-bottom:14px;min-height:240px;cursor:pointer;transition:box-shadow .2s}
+.card:active{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.front{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:180px}
+.back{display:none;flex-direction:column;min-height:180px}
+.card.open .front{display:none}
+.card.open .back{display:flex}
+.ccat{font-size:11px;font-weight:500;color:#007aff;background:#eef4ff;padding:3px 9px;border-radius:8px;margin-bottom:14px}
+.ccn{font-size:22px;font-weight:600;margin-bottom:6px}
+.cen{font-size:14px;color:#5856d6;font-family:Menlo,monospace;margin-bottom:6px}
+.cpron{font-size:12px;color:#86868b;margin-bottom:14px}
+.chint{font-size:11px;color:#aeaeb2;margin-top:auto;padding-top:12px}
+.btitle{font-size:12px;font-weight:600;color:#1d1d1f;margin-bottom:8px;padding-left:9px;border-left:3px solid #007aff}
+.bexp{font-size:13px;line-height:1.8;color:#1d1d1f;margin-bottom:14px}
+.bpro{font-size:12px;line-height:1.6;color:#3d3d40;padding:10px 12px;background:#f0effe;border-radius:8px;margin-bottom:10px}
+.bpro b{color:#534AB7;font-weight:500;font-size:11px;display:block;margin-bottom:3px}
+.bscene{font-size:12px;line-height:1.6;color:#6e6e73;padding:10px 12px;background:#f5f5f7;border-radius:8px;margin-bottom:10px}
+.bscene b{color:#007aff;font-weight:500;font-size:11px;display:block;margin-bottom:3px}
+.btags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:8px}
+.btag{font-size:10px;padding:2px 7px;border-radius:5px;background:#f0f0f5;color:#6e6e73}
+.btag.job{background:#fff3e0;color:#e65100}
+.nav-buttons{display:flex;gap:10px}
+.nav-btn{flex:1;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .2s}
+.nav-btn.prev{background:#e8e8ed;color:#1d1d1f}
+.nav-btn.next{background:#1d1d1f;color:#fff}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.mark-buttons{display:flex;gap:8px;margin-top:10px}
+.mark-btn{flex:1;padding:9px;border-radius:8px;border:1px solid #e8e8ed;background:#fff;font-size:12px;cursor:pointer;text-align:center;transition:all .2s}
+.mark-btn.ml{border-color:#ff9500;color:#ff9500}
+.mark-btn.ml.on{background:#ff9500;color:#fff}
+.mark-btn.mk{border-color:#34c759;color:#34c759}
+.mark-btn.mk.on{background:#34c759;color:#fff}
+.counter{text-align:center;font-size:12px;color:#86868b;margin-top:10px}
+.empty{text-align:center;padding:50px 20px;color:#86868b;background:#fff;border-radius:16px;border:1px solid #e8e8ed;margin-bottom:14px}
+
+/* ===== Challenge Mode ===== */
+.learn-mode{display:block}
+.challenge-mode{display:none}
+
+.quiz-header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.quiz-back{font-size:13px;color:#5856d6;cursor:pointer;font-weight:500;background:none;border:none;padding:4px 0}
+.quiz-title{font-size:15px;font-weight:600}
+.quiz-score-bar{display:flex;gap:16px;font-size:13px;font-weight:500}
+.qs-correct{color:#34c759}
+.qs-wrong{color:#ff3b30}
+
+.quiz-progress{background:#e8e8ed;border-radius:4px;height:5px;margin:0 0 16px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,#34c759,#007aff);border-radius:4px;transition:width .4s ease}
+
+.q-card{background:#fff;border-radius:16px;border:1px solid #e8e8ed;padding:24px 20px;margin-bottom:14px;text-align:center}
+.q-card .ccat{display:inline-block}
+.q-card .ccn{font-size:24px;font-weight:700;margin-bottom:4px}
+.q-card .cen{font-size:15px;margin-bottom:2px}
+.q-card .cpron{margin-bottom:0}
+.q-hint{font-size:11px;color:#aeaeb2;margin-top:10px}
+
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.opt-btn{width:100%;text-align:left;padding:14px 16px;border-radius:12px;border:1.5px solid #e8e8ed;background:#fff;font-size:13px;line-height:1.6;color:#1d1d1f;cursor:pointer;transition:all .2s;position:relative}
+.opt-btn:active{transform:scale(.98)}
+.opt-btn.correct{border-color:#34c759;background:#f0fdf4;color:#1d1d1f}
+.opt-btn.correct::before{content:'✓';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#34c759;font-weight:700;font-size:16px}
+.opt-btn.wrong{border-color:#ff3b30;background:#fff5f5;color:#1d1d1f}
+.opt-btn.wrong::before{content:'✗';position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#ff3b30;font-weight:700;font-size:16px}
+.opt-btn.dim{opacity:.5;cursor:default}
+.opt-btn .opt-label{font-weight:600;color:#5856d6;margin-right:6px}
+
+.quiz-next-btn{width:100%;padding:14px;border-radius:12px;border:none;background:#1d1d1f;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-top:4px}
+.quiz-next-btn:active{transform:scale(.97)}
+
+/* Answer explanation card */
+.ans-card{background:#fff;border-radius:14px;border:1px solid #e8e8ed;padding:16px;margin-top:12px;display:none}
+.ans-card .btitle{margin-bottom:6px}
+.ans-card .bexp{font-size:12px;line-height:1.7;margin-bottom:8px;color:#3d3d40}
+.ans-card .bpro{margin-bottom:6px}
+
+/* Result screen */
+.result-screen{text-align:center;padding:30px 20px;background:#fff;border-radius:16px;border:1px solid #e8e8ed;margin-bottom:14px}
+.result-emoji{font-size:48px;margin-bottom:12px}
+.result-score{font-size:32px;font-weight:700;margin-bottom:4px}
+.result-detail{font-size:13px;color:#86868b;margin-bottom:6px}
+.result-bar{display:flex;gap:4px;justify-content:center;margin:16px 0}
+.result-bar span{height:6px;border-radius:3px;min-width:4px}
+.rb-correct{background:#34c759;flex:1}
+.rb-wrong{background:#ff3b30;flex:1}
+.result-actions{display:flex;gap:10px;margin-top:20px}
+.result-actions button{flex:1;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer}
+.ra-retry{background:#1d1d1f;color:#fff}
+.ra-wrong{background:#fff;border:1.5px solid #ff3b30;color:#ff3b30}
+.ra-back{background:#e8e8ed;color:#1d1d1f}
+
+/* Wrong book */
+.wrong-book{padding:0 0 20px}
+.wb-header{display:flex;align-items:center;justify-content:space-between;padding:14px 0 10px}
+.wb-back{font-size:13px;color:#5856d6;cursor:pointer;font-weight:500;background:none;border:none;padding:4px 0}
+.wb-title{font-size:17px;font-weight:600}
+.wb-clear{font-size:12px;color:#ff3b30;cursor:pointer;background:none;border:none;font-weight:500}
+.wb-list{display:flex;flex-direction:column;gap:10px}
+.wb-item{background:#fff;border-radius:12px;border:1px solid #e8e8ed;padding:14px 16px}
+.wb-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.wb-item-cn{font-size:15px;font-weight:600}
+.wb-item-en{font-size:12px;color:#5856d6;font-family:Menlo,monospace}
+.wb-item-exp{font-size:12px;line-height:1.6;color:#6e6e73}
+.wb-empty{text-align:center;padding:50px 20px;color:#aeaeb2;font-size:14px}
+.wb-actions{display:flex;gap:10px;margin-top:16px}
+.wb-actions button{flex:1;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer}
+
+/* Toast */
+.toast{position:fixed;top:60px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;color:#fff;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.toast.wrong-toast{background:#ff3b30}
+.toast.correct-toast{background:#34c759}
+
+/* Combo animation */
+.combo{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-size:28px;font-weight:800;color:#5856d6;opacity:0;pointer-events:none;z-index:998;transition:all .5s}
+.combo.show{opacity:1;transform:translate(-50%,-60%)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ========== Learn Mode ========== -->
+<div class="learn-mode" id="learnMode">
+<div class="header">
+<h1>大模型术语卡</h1>
+<p>HR 专用的 AI 术语速查 · 点击卡片翻转查看释义</p>
+<div class="challenge-entry">
+<button class="challenge-entry-btn btn-quiz" onclick="startQuiz()">🎯 闯关模式</button>
+<button class="challenge-entry-btn btn-wrong" id="wrongBookBtn" onclick="showWrongBook()" style="display:none">错题本<span class="wrong-badge" id="wrongBadge">0</span></button>
+</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+<div class="progress-text" id="pText">已掌握 0/43 · 进度0%</div>
+<div class="mode-switch">
+<button class="mode-btn active" id="mAll" onclick="setMode('all')">全部</button>
+<button class="mode-btn" id="mLearning" onclick="setMode('learning')">学习中</button>
+<button class="mode-btn" id="mKnown" onclick="setMode('known')">已掌握</button>
+</div>
+<div class="tabs" id="tabs"></div>
+<div id="cardBox">
+<div class="card" id="theCard" onclick="flip()">
+<div class="front" id="frontSide">
+<span class="ccat" id="fCat">基础概念</span>
+<div class="ccn" id="fCn">大模型 / LLM</div>
+<div class="cen" id="fEn">Large Language Model</div>
+<div class="cpron" id="fPron">读L-L-M</div>
+<div class="chint">点击卡片翻转查看释义</div>
+</div>
+<div class="back" id="backSide">
+<div class="btitle">大白话解释</div>
+<div class="bexp" id="bExp">加载中...</div>
+<div class="bpro" id="bPro"><b>专业解析</b>加载中...</div>
+<div class="bscene" id="bScene"><b>招聘场景</b>加载中...</div>
+<div class="btags" id="bTags"></div>
+</div>
+</div>
+</div>
+<div class="nav-buttons">
+<button class="nav-btn prev" id="btnPrev" onclick="go(-1)">上一张</button>
+<button class="nav-btn next" id="btnNext" onclick="go(1)">下一张</button>
+</div>
+<div class="mark-buttons">
+<button class="mark-btn ml" id="btnL" onclick="mark('learning')">学习中</button>
+<button class="mark-btn mk" id="btnK" onclick="mark('known')">已掌握</button>
+</div>
+<div class="counter" id="counter">1 / 43</div>
+</div>
+
+<!-- ========== Challenge Mode ========== -->
+<div class="challenge-mode" id="challengeMode">
+<!-- Quiz screen -->
+<div id="quizScreen">
+<div class="quiz-header">
+<button class="quiz-back" onclick="exitQuiz()">← 返回学习</button>
+<span class="quiz-title" id="quizTitle">闯关模式</span>
+<div class="quiz-score-bar">
+<span class="qs-correct" id="qsCorrect">✓ 0</span>
+<span class="qs-wrong" id="qsWrong">✗ 0</span>
+</div>
+</div>
+<div class="quiz-progress"><div class="quiz-progress-fill" id="qProgFill"></div></div>
+<div class="q-card" id="qCard">
+<span class="ccat" id="qCat">基础概念</span>
+<div class="ccn" id="qCn">大模型</div>
+<div class="cen" id="qEn">Large Language Model</div>
+<div class="cpron" id="qPron">读L-L-M</div>
+<div class="q-hint">选出对应的「大白话解释」</div>
+</div>
+<div class="options" id="optionsBox"></div>
+<button class="quiz-next-btn" id="quizNextBtn" style="display:none" onclick="nextQ()">下一题 →</button>
+<div class="ans-card" id="ansCard">
+<div class="btitle">正确释义</div>
+<div class="bexp" id="ansExp"></div>
+<div class="bpro" id="ansPro"></div>
+</div>
+</div>
+
+<!-- Result screen -->
+<div id="resultScreen" style="display:none">
+<div class="result-screen">
+<div class="result-emoji" id="resEmoji">🎉</div>
+<div class="result-score" id="resScore">0/0</div>
+<div class="result-detail" id="resDetail">正确率 0%</div>
+<div class="result-bar" id="resBar"></div>
+<div class="result-actions" id="resActions"></div>
+</div>
+</div>
+</div>
+
+<!-- ========== Wrong Book ========== -->
+<div id="wrongBookScreen" style="display:none">
+<div class="wb-header">
+<button class="wb-back" onclick="hideWrongBook()">← 返回</button>
+<span class="wb-title">📖 错题本</span>
+<button class="wb-clear" id="wbClearBtn" onclick="clearWrongBook()">清空</button>
+</div>
+<div class="wb-list" id="wbList"></div>
+<div class="wb-actions" id="wbActions"></div>
+</div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+<div class="combo" id="combo"></div>
+
+<script>
+var D=[];
+D.push({id:1,cat:"基础概念",cn:"大模型 / LLM",en:"Large Language Model",pron:"读L-L-M，不读全称",exp:"就是超大规模的AI语言模型，能写文章、聊天、写代码。GPT、DeepSeek都是大模型。相当于一个读了全网书的AI，你问它啥都能答上几句。",pro:"基于Transformer架构，拥有数十亿到数千亿参数的预训练语言模型，通过海量文本数据训练获得通用语言理解和生成能力。核心特征是涌现能力(Emergent Abilities)——参数规模超过一定阈值后，模型突然获得小模型不具备的能力。",scene:"看到JD里写大模型/LLM相关经验，说明这个岗位要做的事情跟大模型有关。可以追问候选人做过哪类大模型项目。",tags:["基础概念"],jobs:[]});
+D.push({id:2,cat:"基础概念",cn:"混元",en:"HunYuan",pron:"读hun-yuan",exp:"腾讯自家的大模型，是腾讯版的ChatGPT。它已经接入了微信、QQ、腾讯文档等产品，是腾讯AI的核心底座。",pro:"腾讯自研的通用大语言模型，支持文生文、文生图、多模态理解等多种能力。基于MoE(Mixture of Experts)架构，采用腾讯自有的高质量中文语料训练，深度集成腾讯云和微信生态。",scene:"招聘混元相关岗位时，候选人需要了解腾讯混元的技术特点，可以问ta对混元和竞品差异的理解。",tags:["基础概念"],jobs:[]});
+D.push({id:3,cat:"基础概念",cn:"多模态",en:"Multimodal",pron:"读multi-modal",exp:"AI能同时理解文字、图片、语音、视频等多种输入。就像人能同时用眼睛看、耳朵听一样，多模态AI能同时处理不同类型的信息。",pro:"指模型能够同时接收、理解和生成多种模态(文本、图像、音频、视频)数据的能力。技术核心是跨模态对齐(Cross-modal Alignment)和模态融合(Fusion)，如CLIP模型将图文映射到统一向量空间。",scene:"JD里看到多模态经验要求，说明这个岗位需要处理图文混合/语音交互类AI产品。",tags:["基础概念","多模态"],jobs:[]});
+D.push({id:4,cat:"基础概念",cn:"Token",en:"Token",pron:"读tou-ken",exp:"AI处理文字的基本单位，大约1个汉字约1-2个token。API计费按token算，就像打车按公里算钱一样。",pro:"Token是大模型处理文本的最小语义单元。英文中1个token约等于4个字符或0.75个单词，中文约1个汉字1-2个token。上下文窗口、API定价、推理延迟均以token为计量单位。",scene:"候选人提到token优化/token成本控制，说明ta对大模型实际落地的成本问题有经验。",tags:["基础概念","数据相关"],jobs:[]});
+D.push({id:5,cat:"基础概念",cn:"参数量",en:"Parameters / B",pron:"B = Billion = 十亿",exp:"衡量模型大小的数字，参数越多模型越聪明但越贵。7B是小模型，70B是中等，几百B是超大模型。就像手机内存，越大越能处理复杂任务。",pro:"参数(Parameters)是模型中可学习的权重数量，直接决定模型容量。7B级适合端侧部署，70B级适合通用任务，600B+级为旗舰模型。参数量与训练数据量、算力需求呈正相关，遵循Scaling Law。",scene:"候选人提到做过70B参数量级的模型，说明ta有中大型模型的实际经验。7B经验偏入门，70B+更有含金量。",tags:["基础概念"],jobs:[]});
+D.push({id:6,cat:"基础概念",cn:"上下文窗口",en:"Context Window",pron:"读context window",exp:"模型一次能记住的文字量。128K token相当于能记住10万字的内容。上下文窗口越大，AI能同时处理的信息就越多，不会前看后忘。",pro:"指模型单次推理能处理的最大token序列长度。长上下文(128K+)涉及位置编码外推、注意力计算复杂度(O(n^2))等挑战。主流方案包括RoPE外推、稀疏注意力等。",scene:"候选人如果提到长上下文优化，说明ta理解大模型在实际应用中信息丢失的问题，有产品落地经验。",tags:["基础概念"],jobs:[]});
+D.push({id:7,cat:"基础概念",cn:"开源 / 闭源",en:"Open / Closed Source",pron:"读open source / closed source",exp:"开源 = 模型代码公开谁都能用，代表：Llama、DeepSeek。闭源 = 只能通过API调用看不到内部，如GPT、混元。",pro:"开源模型指权重和代码公开可下载(如Llama3、Qwen2、DeepSeek-V3)，闭源模型仅提供API服务(如GPT-4、Claude)。开源有利于生态发展和私有化部署，闭源在安全和商业化上更有控制力。",scene:"候选人背景是开源还是闭源方向 = 告诉你ta是社区驱动型还是商业落地型，评估时侧重点不同。",tags:["基础概念"],jobs:[]});
+D.push({id:8,cat:"训练阶段",cn:"预训练",en:"Pre-training",pron:"读pri-training",exp:"模型的第一步学习：把全互联网的文字都读一遍，学语法、学知识。这一步最费钱费GPU，是大模型最核心的环节。",pro:"在大规模无标注语料上进行自监督学习，目标是学习通用语言表示。主流方法是Next Token Prediction(预测下一个token)。预训练数据质量和规模直接决定模型能力上限，需大量GPU集群并行训练。",scene:"候选人做过预训练 = 有最核心的模型训练经验，这类人非常稀缺，值得重点跟进。",tags:["训练阶段"],jobs:["预训练工程师"]});
+D.push({id:9,cat:"训练阶段",cn:"后训练",en:"Post-training",pron:"读post-training",exp:"预训练后给模型开小灶，让它更有用、更安全。包括SFT和RLHF等步骤，是让模型从什么都懂变成什么都能干的关键。",pro:"预训练后的模型对齐和优化阶段，主要包括SFT(监督微调)和RLHF/DPO(偏好对齐)。后训练决定了模型的实际可用性和安全性，是Chat模型与Base模型的关键差异。",scene:"候选人做过后训练 = 对模型如何变得好用有实操经验，可以深入聊对齐方法的选择。",tags:["SFT","RLHF"],jobs:["后训练工程师","对齐研究员"]});
+D.push({id:10,cat:"训练阶段",cn:"SFT 监督微调",en:"Supervised Fine-Tuning",pron:"读S-F-T",exp:"给模型看好的问答范例，让它学会怎么回答。就像老师先示范、学生照着练。喂给它高质量对话，它就能学会好好说话。",pro:"使用人工标注的高质量指令-回答对(Instruction-Response Pairs)对预训练模型进行微调。数据质量远比数量重要，通常只需数万到数十万条精选数据即可显著提升模型指令遵循能力。",scene:"候选人提到SFT经验 = 知道怎么用数据教模型做事，可以追问ta的数据质量把控方法。",tags:["训练阶段"],jobs:[]});
+D.push({id:11,cat:"训练阶段",cn:"RLHF",en:"Reinforcement Learning from Human Feedback",pron:"读R-L-H-F",exp:"让人类给AI的回答打分，AI根据分数学习什么回答更好。就像训练宠物，做对了给奖励做错了不给，慢慢AI就学会给更好的回答了。",pro:"基于人类反馈的强化学习：1)训练奖励模型(Reward Model)学习人类偏好 2)用PPO等强化学习算法优化语言模型。解决了SFT只能模仿无法持续优化的问题，但训练流程复杂且不稳定。",scene:"RLHF是大模型对齐的核心技术，候选人如果做过，说明ta深入理解如何让AI更安全可控。",tags:["对齐","训练"],jobs:["对齐研究员"]});
+D.push({id:12,cat:"训练阶段",cn:"DPO",en:"Direct Preference Optimization",pron:"读D-P-O",exp:"RLHF的简化版，跳过奖励模型直接用人类偏好数据优化。效果差不多但更简单，2024年起越来越多团队用它替代RLHF。",pro:"直接偏好优化，将RLHF的两步流程(训练奖励模型+PPO优化)简化为一步：直接在偏好数据对上优化策略模型。数学上等价于在隐式奖励模型上做策略优化，训练更稳定、超参更少。",scene:"候选人提到DPO = 说明ta在关注对齐领域的新方法，能跟进前沿技术。",tags:["训练对齐方法"],jobs:[]});
+D.push({id:13,cat:"训练阶段",cn:"微调",en:"Fine-tuning",pron:"读fain-tuning",exp:"在已有大模型基础上用特定领域的数据再训练一下，让它擅长某个任务。就像通用人才经过培训变成专业人才。是做行业AI最常用的方法。",pro:"在预训练模型基础上用特定领域或任务的数据继续训练，使模型适配特定场景。按数据类型分为全量微调(Full Fine-tuning)和参数高效微调(PEFT如LoRA)。是行业大模型落地的核心技术。",scene:"候选人提到微调经验，说明ta知道如何把通用大模型改造为行业专用AI。",tags:["训练阶段"],jobs:["微调工程师"]});
+D.push({id:14,cat:"训练阶段",cn:"LoRA",en:"Low-Rank Adaptation",pron:"读lora",exp:"微调的省钱版：只改模型1%的参数就能达到接近全量微调的效果。就像只换手机壳不换手机，花小钱办大事。",pro:"低秩适应，将微调参数分解为两个低秩矩阵(降维再升维)，仅训练这些小矩阵而非全部参数。训练参数量可降至0.1%-1%，显存需求大幅降低，且推理时可合并回原权重无额外延迟。",scene:"候选人提到LoRA微调 = 说明ta关注训练成本效率，有实际落地思维。",tags:["训练阶段"],jobs:[]});
+D.push({id:15,cat:"数据相关",cn:"数据标注",en:"Data Annotation",pron:"读data annotation",exp:"人工给数据打标签，告诉AI什么是好的回答什么是对的。就像老师批改作业，告诉AI哪些做得好哪些需要改进。",pro:"对原始数据进行人工标注和质量评估，为模型训练提供监督信号。大模型时代的标注更强调专家级标注(如代码、数学推理)和偏好标注(好/坏回答排序)，质量要求远高于传统NLP标注。",scene:"数据标注是AI训练的基础，候选人如果有标注团队管理经验，说明ta理解数据质量对模型的影响。",tags:["数据相关"],jobs:["数据标注PM","数据标注Leader"]});
+D.push({id:16,cat:"数据相关",cn:"合成数据",en:"Synthetic Data",pron:"读synthetic data",exp:"用AI生成的训练数据，不是人工标注的。用GPT-4等强模型生成问答对来训练小模型，可以大大降低人工标注成本。",pro:"利用强模型(如GPT-4)自动生成训练数据，包括指令数据、偏好数据、代码数据等。关键技术挑战：数据多样性、质量过滤、避免模型坍塌(Model Collapse)。已成为缓解高质量数据稀缺的主流方案。",scene:"候选人提到合成数据 = 说明ta关注如何低成本获取训练数据，有数据策略思维。",tags:["数据相关"],jobs:[]});
+D.push({id:17,cat:"数据相关",cn:"对齐",en:"Alignment",pron:"读alignment",exp:"让AI的行为符合人类期望，不乱说话不做坏事。通过RLHF/DPO等方法实现，核心是让AI既聪明又安全。",pro:"对齐(Alignment)是指通过RLHF/DPO等方法使模型行为符合人类价值观和意图。核心挑战包括：价值对齐的多元性(不同人群价值观不同)、对齐税(Alignment Tax，对齐后能力可能下降)和越狱攻击防御。",scene:"候选人提到对齐 = 说明ta理解AI安全和可控性的重要性，可以深入聊对齐方法的选择。",tags:["AI安全"],jobs:["AI安全对齐研究员"]});
+D.push({id:18,cat:"数据相关",cn:"蒸馏",en:"Distillation",pron:"读distillation",exp:"把大模型的知识压缩到小模型里。就像名师讲课学生记笔记——大模型是名师，小模型是学生笔记，用少量资源获得接近大模型的效果。",pro:"知识蒸馏(Knowledge Distillation)：用大模型(Teacher)的输出(logits或生成结果)训练小模型(Student)。DeepSeek-R1就是通过蒸馏将671B模型的推理能力迁移到7B/32B等小模型上，大幅降低部署成本。",scene:"DeepSeek-R1就是蒸馏的典型案例，候选人提到蒸馏说明ta关注如何在有限资源下获得好的模型效果。",tags:["训练阶段"],jobs:[]});
+D.push({id:19,cat:"部署推理",cn:"推理",en:"Inference",pron:"读inference",exp:"模型训练好之后用它来生成回答的过程。训练=学习，推理=考试，部署=上班。推理越快用户体验越好。",pro:"推理(Inference)是指训练好的模型接收输入并生成输出的过程。推理优化核心指标：首token延迟(TTFT)、吞吐量(Throughput)、显存占用。关键技术：KV Cache、Continuous Batching、Speculative Decoding。",scene:"候选人提到推理优化，说明ta关注模型实际部署后的性能和成本，有工程落地经验。",tags:["推理","部署"],jobs:["推理优化工程师"]});
+D.push({id:20,cat:"部署推理",cn:"量化",en:"Quantization",pron:"读quantization",exp:"压缩模型精度让它跑得更快更省。就像把高清图压缩成JPG，肉眼看着差不多但文件小很多。INT8/INT4就是压缩级别。",pro:"将模型权重从高精度(FP16/FP32)转换为低精度(INT8/INT4/FP8)表示，减少显存占用和计算量。主流方案：PTQ(训练后量化如GPTQ、AWQ)和QAT(量化感知训练)。INT4量化通常只损失1-3%精度但节省60%+显存。",scene:"候选人提到INT8/INT4量化 = 说明ta懂如何在精度和成本间做权衡，有实际部署经验。",tags:["训练阶段","部署"],jobs:[]});
+D.push({id:21,cat:"部署推理",cn:"GPU / 算力",en:"GPU",pron:"读G-P-U",exp:"训练和运行AI的芯片，相当于AI的大脑。NVIDIA的A100/H100/B200是最主流的AI芯片。训练大模型需要大量GPU，算力是AI公司最贵的资源。",pro:"GPU(Graphics Processing Unit)是深度学习训练和推理的核心硬件。关键指标：显存容量(HBM)、算力(FLOPS)、带宽。NVIDIA A100(80GB HBM2e)、H100(80GB HBM3)、B200(192GB HBM3e)为三代主流AI训练卡。训练70B模型通常需要1000+张A100/H100。",scene:"候选人提到xx张GPU训练 = 告诉你ta的模型规模。1000+卡位=大规模训练经验，含金量高。",tags:["部署推理"],jobs:["AI Infra工程师"]});
+D.push({id:22,cat:"部署推理",cn:"AI Infra",en:"AI Infrastructure",pron:"读AI Infra",exp:"AI的基础设施，包括GPU集群管理、训练框架、模型部署平台等。就像修路架桥，AI Infra是让AI跑起来的底层工程，不是做AI本身而是让AI能被做出来。",pro:"AI基础设施涵盖：1)计算资源调度(千卡级GPU集群管理) 2)分布式训练框架(Megatron-DeepSpeed) 3)模型服务化(Triton/vLLM) 4)数据管线和存储。是连接AI算法和业务落地的关键桥梁。",scene:"AI Infra候选人通常来自系统/后端背景，需要同时理解底层工程+AI工作流，招聘时要重点看系统架构能力。",tags:["部署推理"],jobs:["AI Infra工程师"]});
+D.push({id:23,cat:"部署推理",cn:"端侧部署",en:"On-device / Edge",pron:"读edge deployment",exp:"把AI模型装在手机、电脑等设备上本地运行，不需要联网。苹果的Apple Intelligence就是端侧AI，好处是快、隐私好，但受限于设备算力。",pro:"将压缩/量化后的模型部署在终端设备(手机、PC、IoT)上本地运行。关键技术：模型压缩(INT4量化)、算子优化(NEON/Metal)、内存管理。优势：低延迟、离线可用、隐私保护。挑战：设备算力和内存有限。",scene:"候选人提到端侧部署 = 说明ta关注AI在手机/设备上的实际落地，这个方向需求增长很快。",tags:["端侧AI","部署"],jobs:[]});
+D.push({id:24,cat:"应用技术",cn:"RAG",en:"Retrieval-Augmented Generation",pron:"读rag",exp:"让AI在回答问题前先查资料。就像开卷考试，AI先从知识库里找相关内容再组织回答。这样AI的回答就有依据了不会胡说八道。",pro:"检索增强生成：在模型生成前先从外部知识库检索相关文档，将检索结果作为上下文输入模型。核心组件：文档切分、Embedding向量化、向量检索(Milvus/Pinecone)、上下文注入。解决了LLM知识过时和幻觉问题。",scene:"RAG是企业AI落地的最主流方案，候选人如果有RAG经验 = 有实际企业场景落地能力。",tags:["应用技术方案"],jobs:["RAG工程师"]});
+D.push({id:25,cat:"应用技术",cn:"幻觉",en:"Hallucination",pron:"读hallucination",exp:"AI一本正经地胡说八道。看起来回答得很自信但内容是编的。这是大模型最大的缺陷之一，也是做AI产品最头疼的问题。",pro:"大模型生成看似合理但实际错误或虚构内容的现象。根源：自回归生成机制只追求统计上的流畅性而非事实正确性。缓解方案：RAG检索增强、自我一致性校验、外部知识验证、事实核查模型。",scene:"候选人提到解决幻觉问题 = 说明ta理解大模型落地的最大痛点，有实际产品思维。",tags:["应用技术"],jobs:[]});
+D.push({id:26,cat:"应用技术",cn:"Agent / 智能体",en:"Agent",pron:"读agent",exp:"能自主行动的AI，不只回答问题还能主动使用工具、拆解任务、执行操作。AI从工具变成助手的关键一步，AI=大脑+工具+记忆。",pro:"AI Agent是能够自主规划、使用工具、执行多步任务的智能体。核心架构：规划模块(Plan)、工具调用(Tool Use/Function Calling)、记忆系统(Memory)。2026年最热门的AI应用方向，从单Agent到多Agent协作。",scene:"Agent是当前最火的方向之一，候选人提到Agent经验 = 说明ta在AI应用最前沿。Agent人才 = 同时懂AI和业务流程。",tags:["2026热门方向"],jobs:["Agent应用开发工程师"]});
+D.push({id:27,cat:"应用技术",cn:"Prompt / 提示词",en:"Prompt",pron:"读prompt",exp:"给AI的指令，你说什么它就做什么。提示词写得好AI回答质量就高。写提示词就像写需求文档，描述越清楚AI执行越好。",pro:"Prompt Engineering是通过优化输入指令来引导LLM生成高质量输出的技术。高级技巧：Few-shot(提供示例)、CoT(链式思考)、系统提示(System Prompt)、结构化输出约束。Agent时代Prompt工程的重要性在降低，但理解原理仍有价值。",scene:"Prompt Engineer岗位在减少，但提示词理解能力是所有AI岗位的基础。候选人如果只会写Prompt可能不够，还要看Agent或工程能力。",tags:["应用能力"],jobs:["Prompt Engineer"]});
+D.push({id:28,cat:"应用技术",cn:"CoT 链式思考",en:"Chain of Thought",pron:"读C-O-T",exp:"让AI一步一步想问题不是直接给答案。就像老师让你写出解题步骤，AI把思考过程写出来答案就靠谱多了。DeepSeek-R1就是靠这个出圈的。",pro:"链式思考(CoT)是一种推理增强技术，通过在Prompt中加入思考过程示例引导模型逐步推理。显著提升数学、逻辑等复杂任务的准确率。DeepSeek-R1的创新在于让模型自主学会长程推理(Long CoT)，无需人工示范。",scene:"候选人提到CoT/推理链 = 说明ta理解大模型如何做复杂推理，可以追问对推理模型的理解深度。",tags:["应用技术"],jobs:[]});
+D.push({id:29,cat:"应用技术",cn:"Function Calling",en:"Function Calling / Tool Use",pron:"读function calling",exp:"让AI能调用外部工具，比如查天气、订机票、查数据库。这是Agent的核心能力，AI从只会说话变成能干活的助手。",pro:"Function Calling允许LLM生成结构化的工具调用请求(JSON格式)，由外部系统执行后返回结果。是AI Agent从纯对话到实际操作的关键桥梁。主流协议：OpenAI Function Calling、MCP。",scene:"候选人提到Function Calling = 在做Agent实际落地，懂AI如何与业务系统对接。",tags:["Agent相关"],jobs:[]});
+D.push({id:30,cat:"应用技术",cn:"MCP",en:"Model Context Protocol",pron:"读M-C-P",exp:"AI连接外部工具的统一标准，像USB接口一样。之前每接一个工具要单独开发，有了MCP就像有了统一接口插上就能用。2025年起快速普及。",pro:"Model Context Protocol是Anthropic提出的开放协议，标准化了LLM与外部数据源和工具的连接方式。类似USB-C统一了充电接口，MCP统一了AI工具调用协议。2025-2026年快速成为行业标准，主要平台均已支持。",scene:"2025-2026年热点技能，候选人提到MCP = 说明ta在跟进AI工具生态的最新发展。",tags:["应用技术"],jobs:[]});
+D.push({id:31,cat:"应用技术",cn:"Embedding / 向量化",en:"Embedding",pron:"读embedding",exp:"把文字变成一串数字，意思相近的文字数字也相近。就像把每个人标上经纬度，离得近的人更相似。是RAG和搜索的基础技术。",pro:"Embedding将文本映射到高维向量空间，使语义相近的文本在向量空间中距离也近。是RAG、语义搜索、推荐系统的基石。主流模型：OpenAI text-embedding-3、BGE、E5。维度通常768-3072维。",scene:"候选人提到Embedding经验 = 说明ta有搜索或RAG项目的实际经验。",tags:["应用技术"],jobs:[]});
+D.push({id:32,cat:"应用技术",cn:"向量数据库",en:"Vector Database",pron:"读vector database",exp:"专门存向量的数据库，是RAG的核心组件。就像一个超级图书馆，能根据意思找到最相关的书，而不是只按关键词匹配。Milvus、Pinecone、Chroma是常见产品。",pro:"向量数据库专门存储和检索高维向量数据，支持近似最近邻(ANN)搜索。核心指标：检索延迟(ms级)、召回率(>95%)、规模(亿级向量)。主流方案：Milvus(开源)、Pinecone(云服务)、Chroma(轻量)。",scene:"候选人做过向量数据库 = 懂RAG技术栈的核心，可以聊选型经验和性能优化。",tags:["RAG应用方案"],jobs:[]});
+D.push({id:33,cat:"核心架构",cn:"Transformer",en:"Transformer",pron:"读trans-for-mer",exp:"当前所有大模型的地基架构，2017年Google发明的。所有主流大模型(GPT、Llama、混元)都基于它，是大模型时代的基石。",pro:"2017年Google提出的深度学习架构，核心是自注意力机制(Self-Attention)，能并行处理序列中任意位置的关系。取代了RNN/LSTM成为NLP主流架构。GPT采用Decoder-only变体，BERT采用Encoder-only变体。",scene:"候选人不需要精通Transformer实现细节，但应该知道它是大模型的基础架构，否则说明技术基础薄弱。",tags:["核心架构"],jobs:[]});
+D.push({id:34,cat:"核心架构",cn:"Attention / 注意力机制",en:"Attention Mechanism",pron:"读attention",exp:"AI在处理文字时能自动关注最重要的部分。就像人看文章时会自动关注关键词，AI也是通过注意力机制找到文字中最相关的部分。是Transformer的核心。",pro:"自注意力机制让模型为序列中每个位置计算与其他所有位置的相关性权重，从而捕获长距离依赖关系。多头注意力(Multi-Head Attention)从多个表示子空间并行计算注意力，增强模型表达能力。",scene:"候选人提到注意力机制 = 说明ta理解大模型的核心原理，可以追问对注意力优化的理解。",tags:["核心架构"],jobs:[]});
+D.push({id:35,cat:"核心架构",cn:"MoE 混合专家",en:"Mixture of Experts",pron:"读M-O-E",exp:"模型里有多个专家，每次只激活最相关的几个来处理任务。就像医院分科室不是所有医生都看病而是按需叫人。省钱又高效。DeepSeek-V3就是MoE架构。",pro:"MoE将模型分为多个专家子网络(如256个)，每个token只激活少数专家(如8个)，大幅降低计算量。关键设计：专家路由(Router)、负载均衡(Load Balance)。DeepSeek-V3采用细粒度专家(Shared+Routed Experts)实现更好的效果效率平衡。",scene:"候选人提到MoE = 说明ta关注模型架构效率，有前沿技术视野。混元最新版本也采用MoE。",tags:["核心架构"],jobs:["模型架构研究员"]});
+D.push({id:36,cat:"核心架构",cn:"Scaling Law",en:"Scaling Law",pron:"读scaling law",exp:"模型越大、数据越多、算力越强，效果就越好，这个规律基本是线性的。这就是为什么大家都在拼命堆算力做大模型。但也意味着砸钱就能出效果。",pro:"Scaling Law描述了模型性能与计算量、参数量、数据量的幂律关系：L与C的负alpha次方成正比。核心启示：计算最优分配(Chinchilla Law)指出模型大小与数据量应等比例增长。2024年底出现讨论：Scaling Law是否在放缓？",scene:"候选人提到Scaling Law = 说明ta理解大模型发展的底层逻辑，可以讨论对Scaling Law放缓的看法。",tags:["核心架构"],jobs:[]});
+D.push({id:37,cat:"评估体系",cn:"Benchmark / 评测基准",en:"Benchmark",pron:"读benchmark",exp:"给AI做的标准化考试，用来比较不同模型的能力。MMLU考综合知识，HumanEval考编程，GSM8K考数学。就像高考分数用来比学生。",pro:"Benchmark是大模型能力评估的标准化测试集。主流评测：MMLU(57学科综合)、HumanEval(代码)、GSM8K(数学)、MATH(高等数学)、IFEval(指令遵循)。注意：刷榜(Overfitting to Benchmark)是行业问题，需结合真实场景评估。",scene:"候选人提到在某benchmark上涨5个点 = 说明ta有量化评估能力，但要看是否只是刷榜。",tags:["评估体系"],jobs:[]});
+D.push({id:38,cat:"评估体系",cn:"Topic",en:"Topic",pron:"读topic",exp:"数据/文档的主题分类，在数据管理中非常基础。把训练数据按主题分组，才能确保模型各方面知识均衡不会偏科。",pro:"Topic建模是对非结构化文本进行主题发现和分类的技术。在大模型数据工程中用于：1)训练数据的主题均衡性分析 2)数据去重和多样性保障 3)SFT数据的主题覆盖度评估。常用方法：LDA、BERTopic、聚类。",scene:"懂topic数据管理 = 说明候选人对数据质量有系统性理解，不只是标注数据而是管理数据的主题分布。",tags:["评估体系"],jobs:["数据策略负责人"]});
+D.push({id:39,cat:"评估体系",cn:"Agentic Workflow",en:"Agentic Workflow",pron:"读agentic workflow",exp:"用AI自动完成一系列工作步骤，不是单个问答而是一个完整流程。AI根据任务自动拆解步骤、调用工具、执行操作，像给AI一套SOP让它自己跑。",pro:"Agentic Workflow是将复杂任务拆解为多个AI Agent协作执行的工作流。关键组件：任务规划器、工具编排、状态管理、异常处理。与单次对话相比，Workflow支持多步推理、条件分支、人工审批等企业级需求。",scene:"候选人提到Agentic Workflow = 说明ta理解AI在企业场景中如何真正落地，不只是单点问答。",tags:["评估体系"],jobs:[]});
+D.push({id:40,cat:"评估体系",cn:"数据飞轮",en:"Data Flywheel",pron:"读data flywheel",exp:"数据越多-模型越好-用户越多-数据更多的正循环。就像滚雪球越滚越大。好产品带来用户，用户产生数据，数据改善模型，模型提升产品。",pro:"Data Flywheel描述数据驱动的正向循环：更多用户使用产生更多数据，训练更好的模型吸引更多用户。核心挑战：冷启动(初期数据不足)和数据质量随规模稀释。需建立数据质量管理体系维持飞轮转动。",scene:"候选人提到数据飞轮 = 说明ta理解数据驱动的产品思维，不只是做模型而是构建数据闭环。",tags:["评估体系"],jobs:[]});
+D.push({id:41,cat:"评估体系",cn:"MLOps",en:"Machine Learning Operations",pron:"读M-L-Ops",exp:"AI模型的运维体系，让模型从实验到上线的全流程自动化。类似DevOps但是AI版本，管的是模型训练、部署、监控、迭代。",pro:"MLOps是机器学习的工程化实践，涵盖：数据版本管理(DVC)、实验追踪(MLflow/W&B)、模型注册、CI/CD管线、模型监控(漂移检测)、A/B测试。目标：让模型开发从手工操作变为可复现、可自动化的工程流程。",scene:"MLOps候选人通常来自DevOps/后端背景，需要同时理解模型训练流程和工程化实践，招聘时重点看工程能力。",tags:["工程化"],jobs:["MLOps工程师"]});
+D.push({id:42,cat:"评估体系",cn:"Guardrails / 护栏",en:"Guardrails",pron:"读guardrails",exp:"给AI设的安全边界，防止AI输出不当内容。就像给汽车装护栏，AI回答问题时不会跑偏到危险区域。是做AI产品合规的关键技术。",pro:"AI护栏是确保模型输出符合安全、合规、品牌准则的技术机制。包括：输入过滤(敏感内容检测)、输出审核(有害内容拦截)、格式约束(JSON Schema)、主题限制(Domain Guard)。主流框架：NVIDIA NeMo Guardrails、Guardrails AI。",scene:"候选人提到Guardrails = 在做AI安全合规，这在金融、医疗等强监管行业非常重要。",tags:["应用技术"],jobs:[]});
+D.push({id:43,cat:"评估体系",cn:"Red Teaming",en:"Red Teaming",pron:"读red teaming",exp:"故意找AI的漏洞和弱点，像军事演习里的红军专门攻击。通过模拟各种刁钻问题来测试AI的安全边界，找到会出问题的场景然后修补。",pro:"AI Red Teaming是通过系统化的对抗测试发现模型安全漏洞的方法。测试维度：有害内容生成、隐私泄露、偏见歧视、越狱攻击(Jailbreak)、提示注入(Prompt Injection)。是AI安全评估的核心环节，需构建自动化测试用例库。",scene:"候选人做过Red Teaming = 说明ta理解AI安全攻防，这个方向人才稀缺值得重点关注。",tags:["AI安全"],jobs:["AI安全攻防研究员"]});
+
+/* ===== Learn Mode State ===== */
+var idx=0,mode='all',cat='全部';
+var st=JSON.parse(localStorage.getItem('llm-st2')||'{}');
+
+function getCats(){var s={},r=['全部'];for(var i=0;i<D.length;i++){if(!s[D[i].cat]){s[D[i].cat]=1;r.push(D[i].cat)}}return r}
+function getList(){var r=[];for(var i=0;i<D.length;i++){var c=D[i];if(cat!=='全部'&&c.cat!==cat)continue;if(mode==='learning'&&st[c.id]!=='learning')continue;if(mode==='known'&&st[c.id]!=='known')continue;r.push(c)}return r}
+
+function renderTabs(){var cs=getCats(),h='';for(var i=0;i<cs.length;i++){h+='<div class="tab'+(cs[i]===cat?' active':'')+'" onclick="setCat(\''+cs[i]+'\')">'+cs[i]+'</div>'}document.getElementById('tabs').innerHTML=h}
+
+function show(){
+  var list=getList();
+  if(list.length===0){
+    document.getElementById('cardBox').innerHTML='<div class="empty">当前筛选无卡片<br>换个分类或模式看看</div>';
+    document.getElementById('counter').textContent='';
+    return;
+  }
+  if(idx>=list.length)idx=list.length-1;
+  if(idx<0)idx=0;
+  var c=list[idx];
+  document.getElementById('theCard').className='card';
+  document.getElementById('fCat').textContent=c.cat;
+  document.getElementById('fCn').textContent=c.cn;
+  document.getElementById('fEn').textContent=c.en;
+  document.getElementById('fPron').textContent=c.pron;
+  document.getElementById('bExp').textContent=c.exp;
+  document.getElementById('bPro').innerHTML='<b>专业解析</b>'+c.pro;
+  document.getElementById('bScene').innerHTML='<b>招聘场景</b>'+c.scene;
+  var th='';
+  for(var i=0;i<c.tags.length;i++)th+='<span class="btag">'+c.tags[i]+'</span>';
+  for(var j=0;j<c.jobs.length;j++)th+='<span class="btag job">'+c.jobs[j]+'</span>';
+  document.getElementById('bTags').innerHTML=th;
+  document.getElementById('counter').textContent=(idx+1)+' / '+list.length;
+  document.getElementById('btnPrev').disabled=idx===0;
+  document.getElementById('btnNext').disabled=idx===list.length-1;
+  var s=st[c.id]||'';
+  document.getElementById('btnL').className='mark-btn ml'+(s==='learning'?' on':'');
+  document.getElementById('btnK').className='mark-btn mk'+(s==='known'?' on':'');
+  updProg();
+}
+
+function updProg(){var kn=0;for(var k in st)if(st[k]==='known')kn++;var pct=Math.round(kn/D.length*100);document.getElementById('pFill').style.width=pct+'%';document.getElementById('pText').textContent='已掌握 '+kn+'/'+D.length+' · 进度'+pct+'%'}
+
+function flip(){var el=document.getElementById('theCard');if(!el)return;el.className=el.className.indexOf('open')>=0?'card':'card open'}
+function go(d){idx+=d;show()}
+function setCat(c){cat=c;idx=0;renderTabs();show()}
+function setMode(m){mode=m;idx=0;document.getElementById('mAll').className='mode-btn'+(m==='all'?' active':'');document.getElementById('mLearning').className='mode-btn'+(m==='learning'?' active':'');document.getElementById('mKnown').className='mode-btn'+(m==='known'?' active':'');show()}
+function mark(s){var list=getList();if(!list.length)return;var c=list[idx];if(st[c.id]===s)delete st[c.id];else st[c.id]=s;localStorage.setItem('llm-st2',JSON.stringify(st));show()}
+
+document.addEventListener('keydown',function(e){if(document.getElementById('learnMode').style.display==='none')return;if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key===' '){e.preventDefault();flip()}});
+
+var touchStartX=0;
+document.addEventListener('touchstart',function(e){touchStartX=e.touches[0].clientX});
+document.addEventListener('touchend',function(e){var diff=e.changedTouches[0].clientX-touchStartX;if(Math.abs(diff)>60){if(document.getElementById('learnMode').style.display==='none')return;diff>0?go(-1):go(1)}});
+
+/* ===== Challenge Mode ===== */
+var quiz=[], qIdx=0, qCorrect=0, qWrong=0, qAnswered=false, qCombo=0, isWrongRetry=false;
+var wrongBook=JSON.parse(localStorage.getItem('llm-wrong2')||'[]');
+
+function shuffleArr(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function startQuiz(filterIds){
+  var pool=[];
+  if(filterIds&&filterIds.length){
+    for(var i=0;i<D.length;i++)if(filterIds.indexOf(D[i].id)>=0)pool.push(D[i]);
+  } else {
+    var list=getList();
+    pool=list.slice();
+  }
+  if(pool.length<4){showToast('至少需要4张卡片才能开始闯关','wrong-toast');return}
+  quiz=shuffleArr(pool.slice());
+  qIdx=0;qCorrect=0;qWrong=0;qAnswered=false;qCombo=0;
+  document.getElementById('learnMode').style.display='none';
+  document.getElementById('wrongBookScreen').style.display='none';
+  document.getElementById('challengeMode').style.display='block';
+  document.getElementById('quizScreen').style.display='block';
+  document.getElementById('resultScreen').style.display='none';
+  document.getElementById('quizTitle').textContent=filterIds?'重做错题':'闯关模式';
+  isWrongRetry=!!filterIds;
+  renderQ();
+}
+
+function renderQ(){
+  if(qIdx>=quiz.length){showResult();return}
+  var c=quiz[qIdx];
+  qAnswered=false;
+  document.getElementById('qCat').textContent=c.cat;
+  document.getElementById('qCn').textContent=c.cn;
+  document.getElementById('qEn').textContent=c.en;
+  document.getElementById('qPron').textContent=c.pron;
+  document.getElementById('qProgFill').style.width=(qIdx/quiz.length*100)+'%';
+  document.getElementById('qsCorrect').textContent='✓ '+qCorrect;
+  document.getElementById('qsWrong').textContent='✗ '+qWrong;
+  document.getElementById('quizNextBtn').style.display='none';
+  document.getElementById('ansCard').style.display='none';
+
+  // Generate options: correct + 3 distractors
+  var opts=[{id:c.id,exp:c.exp,correct:true}];
+  var others=[];
+  for(var i=0;i<D.length;i++){if(D[i].id!==c.id)others.push(D[i])}
+  // Prefer same-category distractors
+  var sameCat=[], diffCat=[];
+  for(var j=0;j<others.length;j++){
+    if(others[j].cat===c.cat)sameCat.push(others[j]);
+    else diffCat.push(others[j]);
+  }
+  shuffleArr(sameCat);shuffleArr(diffCat);
+  var distractors=sameCat.concat(diffCat);
+  for(var k=0;k<3&&k<distractors.length;k++){
+    opts.push({id:distractors[k].id,exp:distractors[k].exp,correct:false});
+  }
+  shuffleArr(opts);
+
+  var labels=['A','B','C','D'];
+  var h='';
+  for(var m=0;m<opts.length;m++){
+    h+='<button class="opt-btn" data-idx="'+m+'" onclick="pickOpt('+m+')"><span class="opt-label">'+labels[m]+'</span>'+escHtml(opts[m].exp)+'</button>';
+  }
+  document.getElementById('optionsBox').innerHTML=h;
+  // Store options for reference
+  window._qOpts=opts;
+}
+
+function pickOpt(m){
+  if(qAnswered)return;
+  qAnswered=true;
+  var opts=window._qOpts;
+  var btns=document.getElementById('optionsBox').querySelectorAll('.opt-btn');
+  var chosen=opts[m];
+
+  if(chosen.correct){
+    btns[m].className='opt-btn correct';
+    qCorrect++;qCombo++;
+    showToast('回答正确！','correct-toast');
+    if(qCombo>=3)showCombo(qCombo);
+    // 答对错题本里的题，从错题本移除
+    if(isWrongRetry){removeFromWrongBook(quiz[qIdx].id);showToast('✓ 已从错题本移除','correct-toast')}
+  } else {
+    btns[m].className='opt-btn wrong';
+    qWrong++;qCombo=0;
+    // Highlight correct
+    for(var i=0;i<opts.length;i++){
+      if(opts[i].correct){btns[i].className='opt-btn correct'}
+      else if(i!==m){btns[i].className='opt-btn dim'}
+    }
+    showToast('已加入错题本','wrong-toast');
+    addToWrongBook(quiz[qIdx].id);
+  }
+
+  // Dim unselected
+  for(var j=0;j<opts.length;j++){
+    if(j!==m&&!opts[j].correct){btns[j].className='opt-btn dim'}
+    btns[j].style.pointerEvents='none';
+  }
+
+  document.getElementById('qsCorrect').textContent='✓ '+qCorrect;
+  document.getElementById('qsWrong').textContent='✗ '+qWrong;
+  document.getElementById('qProgFill').style.width=((qIdx+1)/quiz.length*100)+'%';
+
+  // Show explanation card
+  var card=quiz[qIdx];
+  document.getElementById('ansExp').textContent=card.exp;
+  document.getElementById('ansPro').innerHTML='<b>专业解析</b>'+card.pro;
+  document.getElementById('ansCard').style.display='block';
+
+  // Show next button
+  var nb=document.getElementById('quizNextBtn');
+  nb.style.display='block';
+  nb.textContent=qIdx<quiz.length-1?'下一题 →':'查看结果';
+}
+
+function nextQ(){
+  qIdx++;
+  renderQ();
+}
+
+function showResult(){
+  document.getElementById('quizScreen').style.display='none';
+  document.getElementById('resultScreen').style.display='block';
+  var total=quiz.length;
+  var pct=Math.round(qCorrect/total*100);
+  var emoji,detail;
+  if(pct>=90){emoji='🏆';detail='太强了！术语高手！'}
+  else if(pct>=70){emoji='🎉';detail='不错哦，继续加油！'}
+  else if(pct>=50){emoji='💪';detail='还需努力，再来一次！'}
+  else{emoji='📚';detail='多多复习，错题本是好帮手！'}
+  document.getElementById('resEmoji').textContent=emoji;
+  document.getElementById('resScore').textContent=qCorrect+'/'+total;
+  document.getElementById('resDetail').textContent='正确率 '+pct+'% · '+detail;
+
+  var barH='<span class="rb-correct" style="flex:'+qCorrect+'"></span>';
+  if(qWrong>0)barH+='<span class="rb-wrong" style="flex:'+qWrong+'"></span>';
+  document.getElementById('resBar').innerHTML=barH;
+
+  var actH='<button class="ra-retry" onclick="startQuiz()">再来一次</button>';
+  if(wrongBook.length>0)actH+='<button class="ra-wrong" onclick="startQuiz(wrongBook.map(function(w){return w.id}))">重做错题</button>';
+  actH+='<button class="ra-back" onclick="exitQuiz()">返回学习</button>';
+  document.getElementById('resActions').innerHTML=actH;
+  updWrongBtn();
+}
+
+function exitQuiz(){
+  document.getElementById('challengeMode').style.display='none';
+  document.getElementById('learnMode').style.display='block';
+  document.getElementById('wrongBookScreen').style.display='none';
+  show();
+}
+
+/* ===== Wrong Book ===== */
+function addToWrongBook(id){
+  // Check if already in
+  for(var i=0;i<wrongBook.length;i++){if(wrongBook[i].id===id)return}
+  wrongBook.push({id:id,ts:Date.now()});
+  localStorage.setItem('llm-wrong2',JSON.stringify(wrongBook));
+  updWrongBtn();
+}
+
+function removeFromWrongBook(id){
+  for(var i=0;i<wrongBook.length;i++){if(wrongBook[i].id===id){wrongBook.splice(i,1);break}}
+  localStorage.setItem('llm-wrong2',JSON.stringify(wrongBook));
+  updWrongBtn();
+}
+
+function updWrongBtn(){
+  var btn=document.getElementById('wrongBookBtn');
+  var badge=document.getElementById('wrongBadge');
+  if(wrongBook.length>0){
+    btn.style.display='inline-flex';
+    badge.textContent=wrongBook.length;
+  } else {
+    btn.style.display='none';
+  }
+}
+
+function showWrongBook(){
+  document.getElementById('learnMode').style.display='none';
+  document.getElementById('challengeMode').style.display='none';
+  document.getElementById('wrongBookScreen').style.display='block';
+  renderWrongBook();
+}
+
+function hideWrongBook(){
+  document.getElementById('wrongBookScreen').style.display='none';
+  document.getElementById('learnMode').style.display='block';
+  show();
+}
+
+function renderWrongBook(){
+  var h='';
+  if(wrongBook.length===0){
+    h='<div class="wb-empty">错题本是空的 🎉<br>去闯关模式挑战一下吧</div>';
+    document.getElementById('wbClearBtn').style.display='none';
+  } else {
+    for(var i=0;i<wrongBook.length;i++){
+      var card=null;
+      for(var j=0;j<D.length;j++){if(D[j].id===wrongBook[i].id){card=D[j];break}}
+      if(!card)continue;
+      h+='<div class="wb-item">';
+      h+='<div class="wb-item-top"><span class="wb-item-cn">'+card.cn+'</span><span class="wb-item-en">'+card.en+'</span></div>';
+      h+='<div class="wb-item-exp">'+card.exp+'</div>';
+      h+='</div>';
+    }
+    document.getElementById('wbClearBtn').style.display='inline';
+  }
+  document.getElementById('wbList').innerHTML=h;
+
+  var actH='';
+  if(wrongBook.length>=4){
+    actH+='<button class="ra-wrong" style="flex:1;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer" onclick="startQuiz(wrongBook.map(function(w){return w.id}))">重做错题</button>';
+  } else if(wrongBook.length>0) {
+    actH+='<div style="flex:1;text-align:center;font-size:12px;color:#aeaeb2;padding:12px">错题不足4题，继续闯关收集更多</div>';
+  }
+  document.getElementById('wbActions').innerHTML=actH;
+}
+
+function clearWrongBook(){
+  if(!confirm('确定清空错题本吗？'))return;
+  wrongBook=[];
+  localStorage.setItem('llm-wrong2',JSON.stringify(wrongBook));
+  renderWrongBook();
+  updWrongBtn();
+}
+
+/* ===== UI Helpers ===== */
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function showToast(msg,cls){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+cls+' show';
+  setTimeout(function(){t.className='toast '+cls},1500);
+}
+
+function showCombo(n){
+  var c=document.getElementById('combo');
+  c.textContent='🔥 连对 '+n+' 题！';
+  c.className='combo show';
+  setTimeout(function(){c.className='combo'},1200);
+}
+
+/* ===== Init ===== */
+renderTabs();
+show();
+updWrongBtn();
+</script>
+</body>
+</html>
