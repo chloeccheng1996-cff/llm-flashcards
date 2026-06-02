@@ -331,16 +331,17 @@ D.push({id:75,cat:"评估体系",cn:"对齐税",en:"Alignment Tax",pron:"读alig
 D.push({id:76,cat:"评估体系",cn:"越狱攻击",en:"Jailbreak",pron:"读jailbreak",exp:"想办法绕过AI的安全限制让它说不该说的话。就像骗AI说出它的秘密，是测试AI安全性的重要方法。做AI安全必须懂攻才能防。",pro:"越狱攻击(Jailbreak)是通过精心构造的输入绕过模型安全对齐的技术。常见方法：角色扮演(CIAP)、多语言绕过、编码注入、组合攻击。防御手段：Guardrails护栏、安全微调、Red Teaming。越狱与防御是AI安全的攻防核心。",scene:"候选人做过越狱攻击/防御 = 说明ta有AI安全攻防实战经验，这个方向人才非常稀缺。",tags:["评估体系","AI安全"],jobs:["AI安全攻防研究员"]});
 
 /* ===== Learn Mode State ===== */
-var idx=0,mode='all',cat='全部';
+var idx=0,mode='all',cat='全部',_slist=null;
 var st=JSON.parse(localStorage.getItem('llm-st2')||'{}');
 
 function getCats(){var s={},r=['全部'];for(var i=0;i<D.length;i++){if(!s[D[i].cat]){s[D[i].cat]=1;r.push(D[i].cat)}}return r}
 function getList(){var r=[];for(var i=0;i<D.length;i++){var c=D[i];if(cat!=='全部'&&c.cat!==cat)continue;if(mode==='learning'&&st[c.id]!=='learning')continue;if(mode==='known'&&st[c.id]!=='known')continue;r.push(c)}return r}
+function buildList(){var r=getList();_slist=shuffleArr(r);if(_slist.length>0)idx=Math.floor(Math.random()*_slist.length);else idx=0;return _slist}
 
 function renderTabs(){var cs=getCats(),h='';for(var i=0;i<cs.length;i++){h+='<div class="tab'+(cs[i]===cat?' active':'')+'" onclick="setCat(\''+cs[i]+'\')">'+cs[i]+'</div>'}document.getElementById('tabs').innerHTML=h}
 
 function show(){
-  var list=getList();
+  var list=_slist||buildList();
   if(list.length===0){
     document.getElementById('cardBox').innerHTML='<div class="empty">当前筛选无卡片<br>换个分类或模式看看</div>';
     document.getElementById('counter').textContent='';
@@ -374,9 +375,9 @@ function updProg(){var kn=0;for(var k in st)if(st[k]==='known')kn++;var pct=Math
 
 function flip(){var el=document.getElementById('theCard');if(!el)return;el.className=el.className.indexOf('open')>=0?'card':'card open'}
 function go(d){idx+=d;show()}
-function setCat(c){cat=c;idx=0;renderTabs();show()}
-function setMode(m){mode=m;idx=0;document.getElementById('mAll').className='mode-btn'+(m==='all'?' active':'');document.getElementById('mLearning').className='mode-btn'+(m==='learning'?' active':'');document.getElementById('mKnown').className='mode-btn'+(m==='known'?' active':'');show()}
-function mark(s){var list=getList();if(!list.length)return;var c=list[idx];if(st[c.id]===s)delete st[c.id];else st[c.id]=s;localStorage.setItem('llm-st2',JSON.stringify(st));show()}
+function setCat(c){cat=c;buildList();renderTabs();show()}
+function setMode(m){mode=m;buildList();document.getElementById('mAll').className='mode-btn'+(m==='all'?' active':'');document.getElementById('mLearning').className='mode-btn'+(m==='learning'?' active':'');document.getElementById('mKnown').className='mode-btn'+(m==='known'?' active':'');show()}
+function mark(s){var list=_slist||buildList();if(!list.length)return;var c=list[idx];if(st[c.id]===s)delete st[c.id];else st[c.id]=s;localStorage.setItem('llm-st2',JSON.stringify(st));show()}
 
 document.addEventListener('keydown',function(e){if(document.getElementById('learnMode').style.display==='none')return;if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key===' '){e.preventDefault();flip()}});
 
@@ -630,6 +631,7 @@ function showCombo(n){
 
 /* ===== Init ===== */
 renderTabs();
+buildList();
 show();
 updWrongBtn();
 </script>
